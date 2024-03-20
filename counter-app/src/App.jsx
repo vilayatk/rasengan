@@ -1,25 +1,55 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import "./App.css"
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([
+    {
+      description: "Get in shape",
+      title: "Gym!",
+    },
+    {
+      description: "Eat salads",
+      title: "Eat Healthy!",
+    },
+  ]);
 
   return (
     <div>
-      <CustomButton count={count} setCount={setCount} />
+      <button
+        onClick={() => {
+          setTodos([
+            ...todos,
+            { title: "new title", description: "New description" },
+          ]);
+        }}
+      >
+        Add todo {todos.length}
+      </button>
+      {todos.map((todo) => {
+        return (
+          <Todo
+            key={todo.title}
+            title={todo.title}
+            description={todo.description}
+          />
+        );
+      })}
     </div>
   );
 }
 
-function CustomButton(props) {
-  const onClickHandler = () => {
-    props.setCount(props.count + 1);
-  };
-  return <button onClick={onClickHandler}>Counter: {props.count}</button>;
+function Todo(props) {
+  return (
+    <div>
+      <h1>{props.title}</h1>
+      <h2>{props.description}</h2>
+    </div>
+  );
 }
 
-CustomButton.propTypes = {
-  count: PropTypes.number.isRequired,
-  setCount: PropTypes.func.isRequired,
+Todo.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };
 export default App;
